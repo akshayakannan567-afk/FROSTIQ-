@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Opening FrostIQ...</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #0A0E1A;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+    h1 { color: #00E5FF; }
+    .spinner {
+      border: 4px solid #1F2937;
+      border-top: 4px solid #00E5FF;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 20px;
+    }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+<h1>FrostIQ</h1>
+<div class="spinner"></div>
+<h2>Opening app...</h2>
+<p>If the app doesn't open, you'll be redirected to download it.</p>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const deviceId = params.get('id');
+
+  // Deep link to open the app
+  const deepLink = `frostiq://setup?id=${deviceId}`;
+
+  // Try to open the app immediately
+  window.location.href = deepLink;
+
+  // If app doesn't open after 2 seconds, redirect to store
+  setTimeout(() => {
+    const isAndroid = /android/i.test(navigator.userAgent);
+    const isIOS = /iphone|ipad/i.test(navigator.userAgent);
+
+    if (isAndroid) {
+      window.location.href = "https://play.google.com/store/apps/details?id=com.frostiq.app";
+    } else if (isIOS) {
+      window.location.href = "https://apps.apple.com/app/frostiq/YOUR_APP_ID";
+    }
+  }, 2000);
+</script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a1fbb91cfcb77e8a',t:'MTc4NDgyMDU5Mg=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

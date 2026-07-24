@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "712865452371",
+    "firebase_url": "https://frostiq-01-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "frostiq-01",
+    "storage_bucket": "frostiq-01.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:712865452371:android:560ebb24a68941e3c0d1a6",
+        "android_client_info": {
+          "package_name": "com.frostiq.frostiq"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACtDB0dMxBtCah0N8u1d1xeaqoLlLlq4g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

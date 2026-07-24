@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FrostIQ Admin - QR Generator</title>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <style>
+        *{ margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body {
+            background: #0A0E1A;
+            color: white;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        .container { max-width: 800px; margin: 0 auto; }
+        h1 { color: #00E5FF; margin-bottom: 8px; }
+        .subtitle { color: #6B7280; margin-bottom: 32px; }
+        .card {
+            background: #141824;
+            border: 1px solid #1F2937;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 12px 16px;
+            background: #0A0E1A;
+            border: 1px solid #1F2937;
+            border-radius: 8px;
+            color: white;
+            font-size: 15px;
+            margin-bottom: 12px;
+        }
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #00E5FF;
+        }
+        button {
+            background: #00E5FF;
+            color: black;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 15px;
+        }
+        button:hover { background: #00B8CC; }
+        .qr-display {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+        .qr-item {
+            background: white;
+            padding: 16px;
+            border-radius: 12px;
+            text-align: center;
+            color: black;
+        }
+        .qr-item canvas { display: block; margin: 0 auto 8px; }
+        .qr-item .id { font-size: 11px; color: #666; }
+        .qr-item .brand { font-weight: bold; margin-bottom: 8px; }
+        .actions { display: flex; gap: 12px; margin-top: 16px; }
+        .secondary { background: #1F2937; color: white; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>FrostIQ Admin</h1>
+        <p class="subtitle">Generate device QR codes for manufacturing</p>
+
+        <div class="card">
+            <h3 style="margin-bottom: 12px;">Single Device</h3>
+            <input type="text" id="singleMac" placeholder="Enter MAC address (e.g., A1:B2:C3:D4:E5:F6)" />
+            <button onclick="generateSingle()">Generate QR</button>
+            <div id="singleResult" class="qr-display"></div>
+        </div>
+
+        <div class="card">
+            <h3 style="margin-bottom: 12px;">Bulk Generation</h3>
+            <p style="color: #6B7280; margin-bottom: 12px;">Paste one MAC address per line:</p>
+            <textarea id="bulkMacs" rows="8" placeholder="A1:B2:C3:D4:E5:F6&#10;B2:C3:D4:E5:F6:A1&#10;..."></textarea>
+            <div class="actions">
+                <button onclick="generateBulk()">Generate All</button>
+                <button class="secondary" onclick="printAll()">Print All</button>
+                <button class="secondary" onclick="downloadAll()">Download PNG</button>
+            </div>
+            <div id="bulkResult" class="qr-display"></div>
+        </div>
+    </div>
+
+    <script>
+        const BASE_URL = "https://frostiq-app.web.app/setup";
+
+        function cleanMac(mac) {
+            return mac.replace(/[:\-\s]/g, '').toUpperCase();
+        }
+
+        function generateQR(container, mac) {
+            const cleanId = cleanMac(mac);
+            if (cleanId.length !== 12) {
+                alert(`Invalid MAC: ${mac}`);
+                return;
+            }
+
+            const url = `${BASE_URL}?id=${cleanId}`;
+
+            const item = document.createElement('div');
+            item.className = 'qr-item';
+            item.innerHTML = 
+                `<div class="brand">FrostIQ</div>` +
+                `<canvas id="qr-${cleanId}"></canvas>` +
+                `<div class="id">ID: ${cleanId.slice(-6)}</div>`;
+            container.appendChild(item);
+
+            QRCode.toCanvas(document.getElementById(`qr-${cleanId}`), url, {
+                width: 160,
+                errorCorrectionLevel: 'H',
+                margin: 1,
+            });
+        }
+
+        function generateSingle() {
+            const mac = document.getElementById('singleMac').value.trim();
+            const container = document.getElementById('singleResult');
+            container.innerHTML = '';
+            if (mac) generateQR(container, mac);
+        }
+
+        function generateBulk() {
+            const macs = document.getElementById('bulkMacs').value.split('\n').filter(m => m.trim());
+            const container = document.getElementById('bulkResult');
+            container.innerHTML = '';
+            macs.forEach(mac => generateQR(container, mac));
+        }
+
+        function printAll() { window.print(); }
+
+        function downloadAll() {
+            document.querySelectorAll('canvas').forEach((canvas, i) => {
+                const link = document.createElement('a');
+                link.download = `frostiq-qr-${i+1}.png`;
+                link.href = canvas.toDataURL();
+                link.click();
+            });
+        }
+    </script>
+</body>
+</html>
