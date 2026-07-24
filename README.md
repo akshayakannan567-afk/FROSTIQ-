@@ -1,3 +1,4 @@
+<img width="1920" height="1080" alt="FROSTIQ" src="https://github.com/user-attachments/assets/b7764426-3bd2-4d2f-a98e-fec84a481b2b" />
 # FrostIQ - Smart Refrigerator Monitoring System
 
 ##  Project Structure
