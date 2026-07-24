@@ -182,6 +182,14 @@ The platform will continue to evolve with additional sensing capabilities, impro
 **DO NOT REPLACE. UPGRADE**
 
 
+##Repository Structrure
+
+frostiq_project/
+├── manufacturing/
+├── mobile_app/
+├── esp32/
+└── landing_page/
+
 
 ## Team: Powerhouse
 
