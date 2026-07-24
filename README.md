@@ -1,63 +1,224 @@
+# FrostIQ
+
+## Intelligence for Every Refrigerator
+
+### DO NOT REPLACE. UPGRADE.
+
+The missing intelligence layer for conventional refrigerators.
+
+---
+
 <img width="1920" height="1080" alt="FROSTIQ" src="https://github.com/user-attachments/assets/b7764426-3bd2-4d2f-a98e-fec84a481b2b" />
-# FrostIQ - Smart Refrigerator Monitoring System
+---
 
-##  Project Structure
-- `esp32/` - Arduino firmware for ESP32
-- `manufacturing/` - QR code generator (Python CLI + Web Admin)
-- `landing_page/` - Play Store redirect page for QR codes
-- `mobile_app/` - Flutter mobile application
-[README.md](README.md)
-##  Quick Start
+## The Problem
 
-### 1. Setup Firebase
-- Create project at https://console.firebase.google.com
-- Enable Realtime Database (choose asia-southeast1)
-- Enable Authentication (Email/Password)
-- Copy Database URL and Database Secret
+Conventional refrigerators operate without real-time visibility.
+Users cannot monitor appliance health, storage conditions, or energy usage until problems have already occurred.
+Conventional refrigerators provide cooling—but not intelligence.
 
-### 2. Flash ESP32
-- Open `esp32/frostiq_firmware.ino` in Arduino IDE
-- Install libraries: FirebaseESP32, PZEM004Tv30
-- Update DATABASE_URL and DATABASE_SECRET
-- Upload to ESP32
+---
 
-### 3. Generate QR Codes
-```bash
-cd manufacturing
-pip install -r requirements.txt
-python frostiq_qr_generator.py
+<!-- Problem Illustration -->
+
+### Current Limitations
+
+- No real-time temperature monitoring
+- No real-time door status alerts
+- No visibility into storage conditions
+- No visibility into abnormal energy consumption
+
+---
+
+## Our Solution
+
+Introducing **FrostIQ**
+An intelligent retrofit platform that brings real-time monitoring, cloud connectivity, and appliance insights to conventional refrigerators.
+
+---
+
+## About FrostIQ
+
+FrostIQ is an intelligent IoT retrofit platform designed to bring real-time monitoring, cloud connectivity, and appliance insights to conventional refrigerators.
+
+The growing economic gap in the appliance market has made advanced smart refrigerators inaccessible to the average consumer. FrostIQ addresses this challenge by transforming existing refrigerators into intelligent connected appliances without requiring complete appliance replacement.
+
+Using an ESP32-based hardware stack, FrostIQ continuously monitors temperature, air quality, door status, and energy consumption while providing instant alerts and remote monitoring through a connected mobile application.
+
+---
+
+<!-- FrostIQ Hub -->
+
+### Core Features
+
+- Real-Time Monitoring
+- Intelligent Alerts
+- Cloud Synchronization
+- Energy Analytics
+
+---
+
+## How FrostIQ Works
+
+Every sensor reading is transformed into actionable insights through continuous monitoring and intelligent processing.
+
+---
+
+<!-- Workflow -->
+
+### Workflow
+
+1. **Sense**
+   - DHT22 (Temperature & Humidity)
+   - Reed Switch (Door Status)
+   - MQ-135 (Air Quality)
+   - PZEM-004T (Power Monitoring)
+
+2. **Process**
+   - ESP32 processes sensor data
+   - Validates threshold conditions
+
+3. **Sync**
+   - Synchronizes live data with Firebase
+
+4. **Analyze**
+   - Detects abnormal conditions
+   - Performs threshold-based appliance monitoring
+
+5. **Notify**
+   - Sends instant alerts
+   - Updates dashboard in real time
+
+---
+
+## System Architecture
+
+A modular IoT architecture that seamlessly connects sensing, processing, cloud synchronization, and intelligent monitoring.
+
+---
+
+<!-- System Architecture -->
+
+### Architecture Highlights
+
+- Edge Processing — Threshold validation happens locally.
+- Cloud Synchronization — Secure live data synchronization.
+- Modular Retrofit — Compatible with existing refrigerators.
+- Real-Time Monitoring — Instant alerts and live dashboards.
+
+---
+
+## Prototype
+
+<!-- Prototype -->
+
+### Hardware Components
+
+- ESP32 DevKit
+- MQ-135 Gas Sensor
+- DHT22 Temperature Sensor
+- Magnetic Reed Switch
+- PZEM-004T Power Monitor
+- Active Buzzer
+- Breadboard
+- 5V USB Power Supply
+
+---
+
+## Why FrostIQ?
+
+Designed for real homes, not just demos.
+
+---
+
+<!-- Comparison -->
+
+| Smart Refrigerator | FrostIQ Retrofit |
+|-------------------|------------------|
+| ₹2.5L+ | ₹5,000 |
+| Replace the Appliance | Upgrade in ~15 Minutes |
+| Factory Integrated | Modular Retrofit |
+| New Units Only | Existing Refrigerators |
+| Replace Entire Appliance | No Appliance Replacement |
+| High Initial Investment | Approximately 95% Lower Upgrade Cost |
+
+---
+
+## Beyond FrostIQ
+
+One Platform. Endless Possibilities.
+
+---
+
+<!-- Future Scope -->
+
+### Future Applications
+
+- Smart Homes
+- Healthcare
+- Restaurants
+- Cold Chain Logistics
+- Commercial Refrigeration
+- Beyond Refrigerators
+
+---
+
+## Project Status
+
+> **Current Stage:** In Development
+
+The current prototype successfully demonstrates real-time refrigerator monitoring through an ESP32-based IoT architecture.
+The platform will continue to evolve with additional sensing capabilities, improved mobile experiences, and advanced analytics while maintaining its core philosophy:
+
+**DO NOT REPLACE UPGRADE**
+
+---
+
+## Team Powerhouse
+
+| Name | Role |
+|------|------|
+| Vinay E | Team Lead |
+| Sara | Product Strategy & Vision |
+| Akshaya R K | Hardware & Software Development |
+| Aishwarya S | Hardware & Software Development |
+
+---
+
+## Repository
+
+```
+FROSTIQ/
+│
+├── assets/
+│   ├── banner/
+│   ├── architecture/
+│   ├── workflow/
+│   ├── prototype/
+│   ├── dashboard/
+│   ├── comparison/
+│   ├── future/
+│   └── hardware/
+│
+├── firmware/
+│
+├── mobile/
+│
+├── backend/
+│
+├── hardware/
+│
+└── README.md
 ```
 
-### 4. Deploy Landing Page
-```bash
-firebase init hosting
-# Point to landing_page folder
-firebase deploy --only hosting
-```
+---
 
-### 5. Run Mobile App
-```bash
-cd mobile_app
-flutter pub get
-flutterfire configure
-flutter run
-```
+## References
 
-##  User Flow
-1. Customer scans QR sticker ? Opens app (or downloads it)
-2. App shows WiFi setup screen
-3. Customer joins "Frostiq_XXXX" hotspot
-4. Enters home WiFi credentials
-5. Names their device
-6. Live dashboard opens with sensor data
+> References will be updated as the project progresses.
 
-##  Notifications
-- Door open > 30s ? Critical alert
-- Temperature > 10�C ? Critical alert
-- Gas level > 700 ? Warning
-- Power > 300W ? Warning
+---
 
-## ? Theme
-- Dark theme with cyan (#00E5FF) accents
-- Cards: #141824
-- Background: #0A0E1A
+> **Innovation isn't building new things. It's making existing things smarter.**
+**FrostIQ isn't another smart refrigerator.**
+**It's intelligence for every refrigerator.**
