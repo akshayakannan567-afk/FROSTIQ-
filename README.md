@@ -123,7 +123,7 @@ A modular IoT architecture that seamlessly connects sensing, processing, cloud s
 - Active Buzzer
 - Breadboard
 - 5V USB Power Supply
-- 
+
 ## Hardware Block Diagram
 
 The following diagram illustrates the complete hardware interconnection of the FrostIQ prototype, showing how the ESP32 communicates with sensors, power monitoring modules, alert systems, and the cloud-connected dashboard. It demonstrates the modular retrofit architecture that enables real-time monitoring, edge processing, and intelligent refrigerator analytics.
@@ -182,14 +182,15 @@ The platform will continue to evolve with additional sensing capabilities, impro
 **DO NOT REPLACE. UPGRADE**
 
 
-##Repository Structrure
+## Repository Structrure
 
+```Structure
 frostiq_project/
 ├── manufacturing/
 ├── mobile_app/
 ├── esp32/
 └── landing_page/
-
+```
 
 ## Team: Powerhouse
 
