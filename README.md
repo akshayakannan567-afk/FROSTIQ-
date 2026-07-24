@@ -1,6 +1,53 @@
 <img width="1920" height="1080" alt="FROSTIQ" src="https://github.com/user-attachments/assets/b7764426-3bd2-4d2f-a98e-fec84a481b2b" />
 # FrostIQ - Smart Refrigerator Monitoring System
 
+An open-source IoT retrofit module that transforms conventional refrigerators into intelligent appliances through real-time monitoring, predictive maintenance, and food safety analytics. FROSTIQ brings smart refrigeration to existing refrigerators without requiring users to purchase expensive premium appliances.
+
+---
+## Vision
+
+Technology should not be limited by the cost of the appliance.
+FROSTIQ exists to make intelligent refrigeration accessible to every household, restaurant, clinic, and healthcare facility by upgrading existing refrigerators instead of replacing them.
+Our goal is simple: make smart refrigeration affordable, sustainable, and open for everyone.
+
+---
+## About the Project
+
+FROSTIQ was created to address a simple question:
+> Why should intelligent refrigeration only be available to people who can afford a new smart refrigerator?
+
+Millions of households, restaurants, clinics, and small businesses continue to use perfectly functional refrigerators that lack even the most basic monitoring capabilities. These appliances cannot detect food spoilage, identify compressor failures, monitor power consumption, or notify users when the door has been left open.
+Instead of replacing existing refrigerators, FROSTIQ upgrades them.
+By combining embedded hardware, IoT connectivity, and a mobile application, our system converts any compatible refrigerator into a smart monitoring system while keeping the overall solution affordable and accessible.
+
+---
+
+## Market Gap
+
+The current appliance market is divided into two extremes.
+
+- Conventional refrigerators provide no intelligent monitoring.
+- Premium smart refrigerators offer advanced features but remain financially inaccessible for a large section of society.
+
+There is very little available for users who simply want to upgrade the refrigerator they already own.
+This affects:
+- Homes
+- Small restaurants
+- Cloud kitchens
+- Clinics
+- Donation-funded hospitals
+- Rural healthcare centres
+FROSTIQ bridges this gap by providing a modular retrofit solution instead of requiring complete appliance replacement.
+
+---
+
+## Problem Statement
+
+How can we make intelligent refrigerator monitoring accessible without forcing users to purchase an entirely new appliance?
+FROSTIQ addresses this challenge by developing an affordable retrofit module capable of monitoring environmental conditions, food quality, door activity, appliance health, and energy consumption while remaining simple to install and scalable for different refrigerator models.
+
+---
+
 ##  Project Structure
 - `esp32/` - Arduino firmware for ESP32
 - `manufacturing/` - QR code generator (Python CLI + Web Admin)
