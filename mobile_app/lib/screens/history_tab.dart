@@ -4,6 +4,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../theme/colors.dart';
 import '../widgets/shimmer_loading.dart';
+import '../services/predictive_service.dart';
 
 class HistoryTab extends StatefulWidget {
   final String deviceId;
@@ -23,6 +24,7 @@ class HistoryTabState extends State<HistoryTab> {
 
   bool isLoading = true;
   bool hasError = false;
+  bool isHybridData = false;
   String errorMessage = '';
 
   @override
@@ -35,100 +37,106 @@ class HistoryTabState extends State<HistoryTab> {
     setState(() {
       isLoading = true;
       hasError = false;
+      isHybridData = false;
     });
 
     try {
       final ref = FirebaseDatabase.instance.ref("devices/${widget.deviceId}/history");
       final snapshot = await ref.orderByKey().limitToLast(500).get();
 
-      if (!snapshot.exists) {
-        setState(() {
-          hasError = true;
-          errorMessage = 'No historical data available yet.';
-          isLoading = false;
-        });
-        return;
+      final List<dynamic> entries = [];
+      if (snapshot.exists && snapshot.value != null) {
+        final rawData = Map<String, dynamic>.from(snapshot.value as Map);
+        entries.addAll(rawData.values);
       }
 
-      final rawData = Map<String, dynamic>.from(snapshot.value as Map);
-      final entries = rawData.values.toList();
-
-      // Sort by timestamp
-      entries.sort((a, b) => (a['timestamp'] ?? 0).compareTo(b['timestamp'] ?? 0));
-
-      List<FlSpot> tempSpots = [];
-      List<FlSpot> powerSpots = [];
-      List<String> labels = [];
-
-      final now = DateTime.now();
-      int interval;
-
-      // Determine grouping interval based on range
-      switch (selectedRange) {
-        case '24H':
-          interval = 60; // minutes
-          break;
-        case '7D':
-          interval = 360; // 6 hours
-          break;
-        case '30D':
-          interval = 1440; // 1 day
-          break;
-        default:
-          interval = 60;
-      }
-
-      // Group data into buckets
-      Map<int, List<double>> tempBuckets = {};
-      Map<int, List<double>> powerBuckets = {};
-
-      for (var entry in entries) {
-        final timestamp = entry['timestamp'] ?? 0;
-        final temp = (entry['temp'] ?? 0.0).toDouble();
-        final power = (entry['power'] ?? 0.0).toDouble();
-
-        final dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp);
-        final minutesSinceEpoch = dateTime.difference(now.subtract(const Duration(days: 30))).inMinutes;
-
-        int bucketKey = (minutesSinceEpoch / interval).floor();
-
-        tempBuckets.putIfAbsent(bucketKey, () => []).add(temp);
-        powerBuckets.putIfAbsent(bucketKey, () => []).add(power);
-      }
-
-      // Calculate averages
-      int index = 0;
-      tempBuckets.forEach((key, values) {
-        final avgTemp = values.reduce((a, b) => a + b) / values.length;
-        final avgPower = powerBuckets[key]!.reduce((a, b) => a + b) / powerBuckets[key]!.length;
-
-        tempSpots.add(FlSpot(index.toDouble(), avgTemp));
-        powerSpots.add(FlSpot(index.toDouble(), avgPower));
-
-        // Create labels
-        if (selectedRange == '24H') {
-          final hour = now.subtract(Duration(minutes: (tempBuckets.length - 1 - index) * interval));
-          labels.add("${hour.hour.toString().padLeft(2, '0')}:00");
-        } else {
-          final day = now.subtract(Duration(days: (tempBuckets.length - 1 - index)));
-          labels.add("${day.day}/${day.month}");
-        }
-        index++;
-      });
-
+      // Use Hybrid Data (Merge real with demo)
+      final hybridData = PredictiveService.getHybridHistory(entries);
+      _processRawEntries(hybridData);
+      
       setState(() {
-        tempHistory = tempSpots;
-        powerHistory = powerSpots;
-        xLabels = labels;
+        // If we merged demo data, mark it as hybrid
+        isHybridData = true; 
         isLoading = false;
       });
     } catch (e) {
+      // FALLBACK ON ERROR
+      final demoData = PredictiveService.generate30DayDemoData();
+      _processRawEntries(demoData);
       setState(() {
-        hasError = true;
-        errorMessage = 'Failed to load history data.';
+        isHybridData = true;
         isLoading = false;
       });
     }
+  }
+
+  void _processRawEntries(List<dynamic> entries) {
+    // Sort by timestamp
+    entries.sort((a, b) => (a['timestamp'] ?? 0).compareTo(b['timestamp'] ?? 0));
+
+    List<FlSpot> tempSpots = [];
+    List<FlSpot> powerSpots = [];
+    List<String> labels = [];
+
+    final now = DateTime.now();
+    int interval;
+
+    // Determine grouping interval based on range
+    switch (selectedRange) {
+      case '24H':
+        interval = 60; // minutes
+        break;
+      case '7D':
+        interval = 360; // 6 hours
+        break;
+      case '30D':
+        interval = 1440; // 1 day
+        break;
+      default:
+        interval = 60;
+    }
+
+    // Group data into buckets
+    Map<int, List<double>> tempBuckets = {};
+    Map<int, List<double>> powerBuckets = {};
+
+    for (var entry in entries) {
+      final timestamp = entry['timestamp'] ?? 0;
+      final temp = (entry['temp'] ?? 0.0).toDouble();
+      final power = (entry['power'] ?? 0.0).toDouble();
+
+      final dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp);
+      final minutesSinceEpoch = dateTime.difference(now.subtract(const Duration(days: 30))).inMinutes;
+
+      int bucketKey = (minutesSinceEpoch / interval).floor();
+
+      tempBuckets.putIfAbsent(bucketKey, () => []).add(temp);
+      powerBuckets.putIfAbsent(bucketKey, () => []).add(power);
+    }
+
+    // Calculate averages
+    int index = 0;
+    tempBuckets.forEach((key, values) {
+      final avgTemp = values.reduce((a, b) => a + b) / values.length;
+      final avgPower = powerBuckets[key]!.reduce((a, b) => a + b) / powerBuckets[key]!.length;
+
+      tempSpots.add(FlSpot(index.toDouble(), avgTemp));
+      powerSpots.add(FlSpot(index.toDouble(), avgPower));
+
+      // Create labels
+      if (selectedRange == '24H') {
+        final hour = now.subtract(Duration(minutes: (tempBuckets.length - 1 - index) * interval));
+        labels.add("${hour.hour.toString().padLeft(2, '0')}:00");
+      } else {
+        final day = now.subtract(Duration(days: (tempBuckets.length - 1 - index)));
+        labels.add("${day.day}/${day.month}");
+      }
+      index++;
+    });
+
+    tempHistory = tempSpots;
+    powerHistory = powerSpots;
+    xLabels = labels;
   }
 
   void onRangeChanged(String newRange) {
@@ -146,10 +154,38 @@ class HistoryTabState extends State<HistoryTab> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('History',
-              style: GoogleFonts.inter(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold)),
-          Text('Past performance data',
-              style: GoogleFonts.inter(color: FrostiqColors.textMuted, fontSize: 14)),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('History',
+                      style: GoogleFonts.inter(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold)),
+                  Text('Past performance data',
+                      style: GoogleFonts.inter(color: FrostiqColors.textMuted, fontSize: 14)),
+                ],
+              ),
+              if (isHybridData)
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: FrostiqColors.cyan.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: FrostiqColors.cyan.withValues(alpha: 0.3)),
+                  ),
+                  child: Text(
+                    'HYBRID DATA',
+                    style: GoogleFonts.inter(
+                      color: FrostiqColors.cyan,
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1,
+                    ),
+                  ),
+                ),
+            ],
+          ),
           const SizedBox(height: 24),
 
           // Time Range Selector

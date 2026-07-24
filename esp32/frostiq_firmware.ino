@@ -175,4 +175,27 @@ void loop() {
 
         Firebase.updateNode(fbdo, BASE_PATH, json);
     }
+
+    // ============================================
+    // LOG HISTORY EVERY 15 MINUTES
+    // ============================================
+    if (millis() - lastHistoryLogTime >= 900000) { // 15 mins
+        lastHistoryLogTime = millis();
+        Serial.println("Logging historical snapshot...");
+
+        // Reuse sensor readings from loop or read fresh
+        int rawLM35 = analogRead(LM35_PIN);
+        float voltageLM35 = (rawLM35 / 4095.0) * 3300.0;
+        float tempC = voltageLM35 / 10.0;
+        float power = pzem.power();
+        if (isnan(power)) power = 0;
+
+        FirebaseJson historyJson;
+        historyJson.set("temp", tempC);
+        historyJson.set("power", power);
+        historyJson.set("timestamp", ".sv"); // Firebase Server Value
+
+        String historyPath = BASE_PATH + "/history";
+        Firebase.pushJSON(fbdo, historyPath, historyJson);
+    }
 }

@@ -21,6 +21,7 @@ dependencies:
   intl: ^0.19.0
   shared_preferences: ^2.2.2
   app_links: ^6.1.1   # For handling deep links (frostiq://)
+  google_generative_ai: ^0.4.5 # For Gemini AI analysis
 
 flutter:
   uses-material-design: true

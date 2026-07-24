@@ -4,6 +4,7 @@ import '../theme/colors.dart';
 import '../services/alert_monitor.dart';
 import 'home_tab.dart';
 import 'history_tab.dart';
+import 'health_tab.dart';
 import 'alerts_tab.dart';
 import 'settings_tab.dart';
 
@@ -46,6 +47,7 @@ class MainNavigationState extends State<MainNavigation> {
     final tabs = [
       HomeTab(deviceId: widget.deviceId, deviceName: widget.deviceName),
       HistoryTab(deviceId: widget.deviceId),
+      HealthTab(deviceId: widget.deviceId),
       AlertsTab(deviceId: widget.deviceId),
       SettingsTab(deviceId: widget.deviceId, deviceName: widget.deviceName),
     ];
@@ -66,7 +68,7 @@ class MainNavigationState extends State<MainNavigation> {
                     },
                     child: Row(
                       children: [
-                        Icon(Icons.arrow_back_ios_new,
+                        const Icon(Icons.arrow_back_ios_new,
                             color: FrostiqColors.textMuted, size: 18),
                         const SizedBox(width: 6),
                         Text(
@@ -103,11 +105,12 @@ class MainNavigationState extends State<MainNavigation> {
           type: BottomNavigationBarType.fixed,
           selectedItemColor: FrostiqColors.cyan,
           unselectedItemColor: FrostiqColors.textMuted,
-          selectedLabelStyle: GoogleFonts.inter(fontSize: 12, fontWeight: FontWeight.w500),
-          unselectedLabelStyle: GoogleFonts.inter(fontSize: 12),
+          selectedLabelStyle: GoogleFonts.inter(fontSize: 10, fontWeight: FontWeight.w500),
+          unselectedLabelStyle: GoogleFonts.inter(fontSize: 10),
           items: const [
             BottomNavigationBarItem(icon: Icon(Icons.home_outlined), activeIcon: Icon(Icons.home), label: 'Home'),
             BottomNavigationBarItem(icon: Icon(Icons.history), label: 'History'),
+            BottomNavigationBarItem(icon: Icon(Icons.health_and_safety_outlined), activeIcon: Icon(Icons.health_and_safety), label: 'AI Health'),
             BottomNavigationBarItem(icon: Icon(Icons.notifications_outlined), activeIcon: Icon(Icons.notifications), label: 'Alerts'),
             BottomNavigationBarItem(icon: Icon(Icons.settings_outlined), activeIcon: Icon(Icons.settings), label: 'Settings'),
           ],
