@@ -6,258 +6,730 @@
 
 The missing intelligence layer for conventional refrigerators.
 
-
 <p align="center">
 <img width="1920" height="1080" alt="FROSTIQ" src="https://github.com/user-attachments/assets/b7764426-3bd2-4d2f-a98e-fec84a481b2b" />
 </p>
 
+---
+
 ## The Problem
 
 Conventional refrigerators operate without real-time visibility.
-Users cannot monitor appliance health, storage conditions, or energy usage until problems have already occurred.
-Conventional refrigerators provide cooling—but not intelligence.
-
+Users cannot monitor appliance health, storage conditions, or energy usage until problems have already occurred. Existing appliances provide cooling but offer no insight into operating conditions, maintenance requirements, or energy efficiency.
+Advanced smart refrigerators solve some of these problems, but they remain expensive and require replacing an otherwise functional appliance.
+Conventional refrigerators provide cooling.
+They do not provide intelligence.
 
 ### Current Limitations
 
 - No real-time temperature monitoring
-- No real-time door status alerts
+- No current sensors can handle gaps as small as 1mm or less than that
 - No visibility into storage conditions
 - No visibility into abnormal energy consumption
+- No appliance health assessment
+- No preventive maintenance reminders
+- No cleaning schedule recommendations
+- No intelligent maintenance guidance
 
-
+---
 
 ## Our Solution
 
-Introducing **FrostIQ**
-An intelligent retrofit platform that brings real-time monitoring, cloud connectivity, and appliance insights to conventional refrigerators.
+Introducing **FrostIQ**.
 
+FrostIQ is an AI-assisted IoT retrofit platform that transforms conventional refrigerators into intelligent connected appliances without requiring complete appliance replacement.
+Using embedded sensing, cloud connectivity, and AI-assisted maintenance guidance, FrostIQ continuously monitors refrigerator conditions, provides appliance health insights, estimates electricity consumption, and delivers personalized maintenance recommendations through a mobile application.
+Instead of replacing an existing refrigerator with an expensive smart appliance, FrostIQ upgrades the one users already own.
 
+---
 
 ## About FrostIQ
 
-FrostIQ is an intelligent IoT retrofit platform designed to bring real-time monitoring, cloud connectivity, and appliance insights to conventional refrigerators.
+FrostIQ combines an ESP32-based embedded system, Firebase Realtime Database, a Flask backend, and a Flutter mobile application into a unified monitoring platform.
+The system continuously monitors:
 
-The growing economic gap in the appliance market has made advanced smart refrigerators inaccessible to the average consumer. FrostIQ addresses this challenge by transforming existing refrigerators into intelligent connected appliances without requiring complete appliance replacement.
+- Temperature
+- Air Quality
+- Door Status
+- Voltage
+- Current
+- Power Consumption
+- Energy Consumption
 
-Using an ESP32-based hardware stack, FrostIQ continuously monitors temperature, air quality, door status, and energy consumption while providing instant alerts and remote monitoring through a connected mobile application.
-
+All telemetry is synchronized with Firebase, analysed by the backend, and presented through a mobile application that provides real-time monitoring, appliance health analysis, and AI-assisted maintenance guidance.
 
 <p align="center">
-<img width="1370" height="1148" alt="ChatGPT Image Jul 21, 2026, 04_41_40 PM" src="https://github.com/user-attachments/assets/c3d6d82b-05c6-4495-a524-81821a25aa18" />
+<img width="1370" height="1148" alt="System Overview" src="https://github.com/user-attachments/assets/c3d6d82b-05c6-4495-a524-81821a25aa18" />
 </p>
 
-### Core Features
+---
+
+## Core Features
 
 - Real-Time Monitoring
-- Intelligent Alerts
 - Cloud Synchronization
-- Energy Analytics
+- AI-Assisted Maintenance Guidance
+- Appliance Health Score
+- Smart Notifications
+- Personalized Maintenance Scheduling
+- Cleaning Reminders
+- Energy Monitoring
+- Electricity Bill Estimation
+- QR-Based Device Registration
+- Live Dashboard
+- Remote Appliance Monitoring
 
-
+---
 
 ## How FrostIQ Works
 
 Every sensor reading is transformed into actionable insights through continuous monitoring and intelligent processing.
 
-
 <p align="center">
-<img width="1672" height="678" alt="ChatGPT Image Jul 21, 2026, 07_34_25 PM" src="https://github.com/user-attachments/assets/59a84d0a-6ae7-4ecf-b93e-9e120c71157c" />
+<img width="1672" height="678" alt="Workflow" src="https://github.com/user-attachments/assets/59a84d0a-6ae7-4ecf-b93e-9e120c71157c" />
 </p>
 
 ### Workflow
 
-1. **Sense**
-   - DHT22 (Temperature & Humidity)
-   - Reed Switch (Door Status)
-   - MQ-135 (Air Quality)
-   - PZEM-004T (Power Monitoring)
+### 1. Sense
 
-2. **Process**
-   - ESP32 processes sensor data
-   - Validates threshold conditions
+The ESP32 continuously collects data from:
 
-3. **Sync**
-   - Synchronizes live data with Firebase
+- DHT22 Temperature Sensor
+- MQ-135 Air Quality Sensor
+- Reed Switch Door Sensor
+- PZEM-004T Energy Monitoring Module
 
-4. **Analyze**
-   - Detects abnormal conditions
-   - Performs threshold-based appliance monitoring
+### 2. Process
 
-5. **Notify**
-   - Sends instant alerts
-   - Updates dashboard in real time
+The ESP32 validates sensor readings and detects abnormal operating conditions before transmitting telemetry to the cloud.
 
+### 3. Synchronize
 
+Validated telemetry is securely synchronized with Firebase Realtime Database.
+
+### 4. Analyse
+
+The backend evaluates incoming data to:
+
+- Calculate appliance health
+- Detect abnormal conditions
+- Estimate energy consumption
+- Generate maintenance insights
+
+### 5. AI Assistance
+
+The AI assistant analyses live appliance telemetry and provides:
+
+- Maintenance recommendations
+- Troubleshooting guidance
+- Cleaning recommendations
+- Appliance-specific assistance
+
+### 6. Notify
+
+The mobile application receives:
+
+- Live telemetry updates
+- Smart notifications
+- Maintenance reminders
+- Appliance health alerts
+- Energy usage summaries
+
+---
 
 ## System Architecture
 
-A modular IoT architecture that seamlessly connects sensing, processing, cloud synchronization, and intelligent monitoring.
-
+FrostIQ follows a modular cloud-connected architecture that separates embedded sensing, cloud synchronization, AI processing, and mobile interaction.
 
 <p align="center">
-<img width="1057" height="860" alt="ChatGPT Image Jul 21, 2026, 11_49_55 PM" src="https://github.com/user-attachments/assets/c288b6a3-7183-4c9a-9d29-6466954a33de" />
+<img width="1057" height="860" alt="Architecture" src="https://github.com/user-attachments/assets/c288b6a3-7183-4c9a-9d29-6466954a33de" />
 </p>
+
+### Architecture Overview
+
+```
+                    Sensors
+        ┌──────────────────────────┐
+        │ DHT22                    │
+        │ MQ-135                   │
+        │ Reed Switch              │
+        │ PZEM-004T                │
+        └─────────────┬────────────┘
+                      │
+                  ESP32 Firmware
+                      │
+             Firebase Realtime Database
+                      │
+              Flask Backend Server
+                      │
+      ┌───────────────┴───────────────┐
+      │                               │
+AI Maintenance Assistant      Notification Engine
+      │                               │
+      └───────────────┬───────────────┘
+                      │
+              Flutter Mobile App
+```
 
 ### Architecture Highlights
 
-- Edge Processing — Threshold validation happens locally.
-- Cloud Synchronization — Secure live data synchronization.
-- Modular Retrofit — Compatible with existing refrigerators.
-- Real-Time Monitoring — Instant alerts and live dashboards.
+- Modular Retrofit Architecture
+- Edge Processing using ESP32
+- Firebase Cloud Synchronization
+- Flask Backend for AI Processing
+- AI-Assisted Maintenance Guidance
+- Real-Time Mobile Dashboard
+- Scalable Cloud Infrastructure
 
-
-
+---
 ## Prototype
+
+The FrostIQ prototype has been developed as a compact retrofit module that can be installed on conventional refrigerators without modifying the appliance's internal circuitry.
+
+The prototype integrates environmental sensing, energy monitoring, cloud connectivity, and intelligent analytics into a single embedded platform.
+
+The system continuously monitors refrigerator conditions and synchronizes live telemetry with Firebase, enabling users to remotely monitor appliance performance through the mobile application.
+
 <p align="center">
-<img width="1349" height="1166" alt="ChatGPT Image Jul 22, 2026, 07_16_41 PM" src="https://github.com/user-attachments/assets/1aaaa324-23b3-4626-a431-6c746c67938d" />
+<img width="850" alt="Prototype" src="https://github.com/user-attachments/assets/YOUR-PROTOTYPE-IMAGE" />
 </p>
 
-### Hardware Components
+---
 
-- ESP32 DevKit
-- MQ-135 Gas Sensor
-- DHT22 Temperature Sensor
-- Magnetic Reed Switch (MC-38)
-- PZEM-004T Power Monitor
-- Active Buzzer
-- Breadboard
-- 5V USB Power Supply
+## Hardware Components
+
+FrostIQ combines multiple sensors with an ESP32 microcontroller to provide continuous monitoring of refrigerator operating conditions.
+
+| Component | Purpose |
+|-----------|---------|
+| ESP32 | Main Microcontroller |
+| DHT22 | Temperature Monitoring |
+| MQ-135 | Air Quality Monitoring |
+| Reed Switch | Door Status Detection |
+| PZEM-004T | Voltage, Current, Power and Energy Monitoring |
+| Active Buzzer | Local Alert System |
+| Wi-Fi Module (ESP32) | Cloud Connectivity |
+
+---
 
 ## Hardware Block Diagram
 
-The following diagram illustrates the complete hardware interconnection of the FrostIQ prototype, showing how the ESP32 communicates with sensors, power monitoring modules, alert systems, and the cloud-connected dashboard. It demonstrates the modular retrofit architecture that enables real-time monitoring, edge processing, and intelligent refrigerator analytics.
+The embedded hardware continuously collects environmental and electrical parameters before transmitting them to the cloud.
 
 <p align="center">
-<img width="1683" height="934" alt="ChatGPT Image Jul 24, 2026, 02_47_53 PM" src="https://github.com/user-attachments/assets/2b5fe2cd-7909-4c16-b250-6d48cb18f8ad" />
+<img width="1100" alt="Hardware Block Diagram" src="https://github.com/user-attachments/assets/YOUR-HARDWARE-DIAGRAM" />
 </p>
 
+### Data Flow
 
+```
+Temperature Sensor
+                  │
+Air Quality Sensor│
+                  │
+Door Sensor       │
+                  ▼
+               ESP32
+                  │
+        Energy Monitoring Module
+                  │
+                  ▼
+      Firebase Realtime Database
+                  │
+             Flask Backend
+                  │
+                  ▼
+      Flutter Mobile Application
+```
 
-## Why FrostIQ?
+---
 
-Designed for real homes, not just demos.
+## Mobile Application
 
+FrostIQ includes a Flutter-based mobile application that allows users to monitor appliance conditions from anywhere.
 
+The application communicates with Firebase to display live telemetry while the Flask backend processes appliance analytics and AI-assisted maintenance guidance.
 
-<!-- Comparison -->
-
-| Smart Refrigerator | FrostIQ Retrofit |
-|-------------------|------------------|
-| ₹2.5L+ | ₹5,000 |
-| Replace the Appliance | Upgrade in ~15 Minutes |
-| Factory Integrated | Modular Retrofit |
-| New Units Only | Existing Refrigerators |
-| Replace Entire Appliance | No Appliance Replacement |
-| High Initial Investment | Approximately 95% Lower Upgrade Cost |
-
-
-
-## Beyond FrostIQ
-
-One Platform. Endless Possibilities.
-
+Users receive real-time updates, maintenance reminders, appliance health information, and energy insights through a simple dashboard.
 
 <p align="center">
-<img width="1536" height="759" alt="ChatGPT Image Jul 23, 2026, 07_50_41 PM" src="https://github.com/user-attachments/assets/b0069f36-9e77-4c83-8a3e-dcd20681d79f" />
+<img width="1000" alt="Mobile Application" src="https://github.com/user-attachments/assets/YOUR-APP-SCREENSHOT" />
 </p>
 
-### Future Applications
+### Application Features
 
-- Smart Homes
-- Healthcare
-- Restaurants
-- Cold Chain Logistics
-- Commercial Refrigeration
+- Live Dashboard
+- AI Maintenance Assistant
+- Appliance Health Score
+- Smart Notifications
+- Energy Monitoring
+- Electricity Bill Estimation
+- Maintenance Scheduling
+- Cleaning Reminders
+- QR-Based Device Registration
 
+---
 
+## Application Demonstration
 
-## Project Status
+The following demonstration showcases the complete FrostIQ workflow, including device registration, real-time monitoring, AI-assisted maintenance guidance, appliance health monitoring, smart notifications, and energy analytics.
 
-> **Current Stage:** In Development
+Replace the placeholder below with your uploaded GitHub video.
 
-The current prototype successfully demonstrates real-time refrigerator monitoring through an ESP32-based IoT architecture.
-The platform will continue to evolve with additional sensing capabilities, improved mobile experiences, and advanced analytics while maintaining its core philosophy:
+```text
+https://github.com/user-attachments/assets/your-demo-video
+```
 
-**DO NOT REPLACE. UPGRADE**
+---
 
+## AI Maintenance Assistant
+
+FrostIQ includes an AI-assisted maintenance assistant that provides contextual guidance based on live refrigerator telemetry.
+
+Instead of displaying only sensor readings, the assistant analyses appliance conditions and explains potential issues while recommending practical maintenance actions.
+
+The AI assistant retrieves telemetry from Firebase through the Flask backend and generates responses using a Large Language Model.
+
+### Capabilities
+
+- Explains abnormal sensor readings
+- Provides refrigerator maintenance guidance
+- Answers appliance-related questions
+- Suggests preventive maintenance
+- Recommends cleaning schedules
+- Assists with troubleshooting
+
+### AI Workflow
+
+```
+ESP32
+   │
+   ▼
+Firebase Realtime Database
+   │
+   ▼
+Flask Backend
+   │
+   ▼
+OpenAI API
+   │
+   ▼
+Flutter Mobile Application
+```
+
+---
+
+## Appliance Health Score
+
+FrostIQ continuously evaluates the overall condition of the refrigerator using multiple sensor readings.
+
+The health score provides users with a simple indication of appliance condition while helping identify potential issues before they become failures.
+
+### Parameters Considered
+
+- Temperature
+- Air Quality
+- Door Status
+- Power Consumption
+- Active Alerts
+
+| Health Score | Status |
+|--------------|--------|
+| 90–100 | Excellent |
+| 75–89 | Good |
+| 60–74 | Maintenance Recommended |
+| Below 60 | Immediate Attention Required |
+
+The health score is recalculated whenever new telemetry is received, ensuring users always have an up-to-date assessment of appliance condition.
+
+---
+
+## Smart Maintenance Engine
+
+Each refrigerator registered with FrostIQ maintains its own appliance profile.
+
+Instead of sending generic reminders, FrostIQ generates personalized maintenance schedules using appliance information together with live telemetry.
+
+### Appliance Profile
+
+- Brand
+- Model Number
+- Purchase Date
+- Warranty Expiry
+- Household Size
+- Usage Pattern
+- Last Cleaning Date
+- Last Service Date
+- Notification Preferences
+
+Based on this information, FrostIQ automatically schedules:
+
+- Cleaning Reminders
+- Preventive Maintenance
+- Warranty Notifications
+- Appliance Health Alerts
+
+Users can update maintenance history directly within the application, allowing reminder schedules to automatically adjust based on the latest service activity.
+
+---
+
+## Smart Notifications
+
+FrostIQ generates notifications based on both appliance history and live operating conditions.
+
+Notifications are designed to inform users about important appliance events before they develop into larger problems.
+
+### Notification Types
+
+- Door Left Open
+- High Temperature
+- Poor Air Quality
+- High Energy Consumption
+- Cleaning Reminder
+- Preventive Maintenance Reminder
+- Appliance Health Warning
+- Warranty Reminder
+
+Notifications are stored in Firebase and synchronized across the mobile application in real time.
+
+---
+
+## Energy Monitoring and Electricity Bill Estimation
+
+FrostIQ continuously monitors electrical parameters using the PZEM-004T Energy Monitoring Module.
+
+Rather than displaying only instantaneous power, the application converts measured energy into meaningful usage statistics.
+
+### Live Energy Parameters
+
+- Voltage
+- Current
+- Power
+- Energy Consumption
+
+### Energy Analytics
+
+- Daily Energy Usage
+- Weekly Energy Usage
+- Monthly Energy Usage
+- Estimated Annual Energy Usage
+
+### Electricity Bill Estimation
+
+Users can configure their local electricity tariff within the application.
+
+Using measured energy consumption, FrostIQ estimates:
+
+- Daily Electricity Cost
+- Weekly Electricity Cost
+- Monthly Electricity Cost
+- Estimated Annual Cost
+
+| Parameter | Example |
+|-----------|---------|
+| Current Power | 82 W |
+| Daily Consumption | 1.52 kWh |
+| Monthly Consumption | 45.60 kWh |
+| Electricity Tariff | ₹8.25/kWh |
+| Estimated Monthly Bill | ₹376.20 |
+
+These estimates provide users with greater visibility into appliance operating costs and encourage more energy-efficient usage.
+
+---
+## Dashboard Overview
+
+The FrostIQ dashboard provides users with a centralized view of appliance performance, health, maintenance history, and energy usage.
+
+Instead of requiring users to interpret raw sensor values, the dashboard presents meaningful insights that simplify monitoring and maintenance.
+
+<p align="center">
+<img width="1000" alt="Dashboard" src="https://github.com/user-attachments/assets/YOUR-DASHBOARD-SCREENSHOT" />
+</p>
+
+### Dashboard Features
+
+- Live Temperature Monitoring
+- Air Quality Status
+- Door Status
+- Voltage Monitoring
+- Current Monitoring
+- Live Power Consumption
+- Daily Energy Usage
+- Weekly Energy Usage
+- Monthly Energy Usage
+- Estimated Electricity Bill
+- Appliance Health Score
+- AI Maintenance Assistant
+- Smart Notifications
+- Maintenance History
+
+---
 
 ## Repository Structure
 
-```Structure
-frostiq_project/
-├── manufacturing/
-├── mobile_app/
+```text
+FrostIQ/
+│
+├── backend/
+│   ├── app.py
+│   ├── routes.py
+│   ├── ai_service.py
+│   ├── firebase_service.py
+│   ├── notification_service.py
+│   ├── scheduler.py
+│   ├── prompts.py
+│   ├── config.py
+│   ├── requirements.txt
+│   ├── .env.example
+│   └── serviceAccountKey.json
+│
 ├── esp32/
-└── landing_page/
+│   ├── frostiq_firmware.ino
+│   └── libraries/
+│
+├── mobile_app/
+│   ├── android/
+│   ├── ios/
+│   ├── lib/
+│   ├── assets/
+│   ├── pubspec.yaml
+│   └── README.md
+│
+├── landing_page/
+│
+├── manufacturing/
+│   ├── qr_generator.py
+│   ├── labels/
+│   └── README.md
+│
+├── docs/
+│   ├── architecture/
+│   ├── diagrams/
+│   └── screenshots/
+│
+├── LICENSE
+├── .gitignore
+└── README.md
 ```
 
-## 🚀 Quick Start
+---
 
-### 1. Setup Firebase
-- Create project at https://console.firebase.google.com
-- Enable Realtime Database (choose asia-southeast1)
-- Enable Authentication (Email/Password)
-- Copy Database URL and Database Secret
+## Quick Start
 
-### 2. Flash ESP32
-- Open `esp32/frostiq_firmware.ino` in Arduino IDE
-- Install libraries: FirebaseESP32, PZEM004Tv30
-- Update DATABASE_URL and DATABASE_SECRET
-- Upload to ESP32
+### 1. Clone the Repository
 
-### 3. Generate QR Codes
 ```bash
-cd manufacturing
+git clone https://github.com/your-username/FrostIQ.git
+
+cd FrostIQ
+```
+
+---
+
+### 2. Configure Firebase
+
+Create a Firebase project.
+
+Enable:
+
+- Firebase Authentication
+- Firebase Realtime Database
+
+Download your Firebase Service Account Key and place it inside:
+
+```text
+backend/serviceAccountKey.json
+```
+
+---
+
+### 3. Configure Environment Variables
+
+Create a `.env` file inside the backend directory.
+
+```env
+OPENAI_API_KEY=your_api_key
+
+FIREBASE_DATABASE_URL=https://your-project.firebaseio.com
+
+FIREBASE_SERVICE_ACCOUNT=serviceAccountKey.json
+
+SECRET_KEY=your_secret_key
+
+HOST=0.0.0.0
+
+PORT=5000
+
+OPENAI_MODEL=gpt-4o-mini
+```
+
+---
+
+### 4. Install Backend Dependencies
+
+```bash
+cd backend
+
 pip install -r requirements.txt
-python frostiq_qr_generator.py
 ```
 
-### 4. Deploy Landing Page
+---
+
+### 5. Run the Flask Backend
+
 ```bash
-firebase init hosting
-# Point to landing_page folder
-firebase deploy --only hosting
+python app.py
 ```
 
-### 5. Run Mobile App
+The backend will start at:
+
+```text
+http://localhost:5000
+```
+
+---
+
+### 6. Upload the ESP32 Firmware
+
+Flash the firmware using the Arduino IDE.
+
+Update the following before uploading:
+
+- Wi-Fi Credentials
+- Firebase Configuration
+- Device ID
+
+---
+
+### 7. Run the Flutter Application
+
 ```bash
 cd mobile_app
+
 flutter pub get
-flutterfire configure
+
 flutter run
 ```
 
-## 📱 User Flow
-1. Customer scans QR sticker → Opens app (or downloads it)
-2. App shows WiFi setup screen
-3. Customer joins "Frostiq_XXXX" hotspot
-4. Enters home WiFi credentials
-5. Names their device
-6. Live dashboard opens with sensor data
+### 8. Register the Refrigerator
 
-## 🔔 Notifications
-- Door open > 30s → Critical alert
-- Temperature > 10°C → Critical alert
-- Gas level > 700 → Warning
-- Power > 300W → Warning
+Scan the generated QR code to register the refrigerator.
 
-## 🎨 Theme
-- Dark theme with cyan (#00E5FF) accents
-- Cards: #141824
-- Background: #0A0E1A
+The application will automatically begin displaying live telemetry.
 
-## Team: Powerhouse
+## Technology Stack
 
-| Name | Role |
-|------|------|
-| Vinay E | Team Lead & Software Development |
-| Sara | Hardware Development |
-| Akshaya R K | Documentation |
-| Aishwarya S | Product Strategy & Vision |
+| Layer | Technology |
+|--------|------------|
+| Embedded System | ESP32 |
+| Firmware | Arduino C++ |
+| Sensors | DHT22, MQ-135, Reed Switch, PZEM-004T |
+| Backend | Flask |
+| Programming Language | Python |
+| Mobile Application | Flutter |
+| Cloud Database | Firebase Realtime Database |
+| Authentication | Firebase Authentication |
+| AI | OpenAI API |
+| Version Control | Git & GitHub |
 
+## Why FrostIQ?
 
+| Conventional Refrigerator | FrostIQ |
+|--------------------------|----------|
+| Temperature only | Complete appliance monitoring |
+| No cloud connectivity | Firebase synchronization |
+| No maintenance guidance | AI-assisted recommendations |
+| No appliance health analysis | Live health score |
+| No notifications | Smart alerts |
+| No energy analytics | Live energy monitoring |
+| No bill estimation | Estimated electricity cost |
+| Manual maintenance | Personalized maintenance scheduling |
 
-> **Innovation isn't building new things. It's making existing things smarter.**
-**FrostIQ isn't another smart refrigerator.**
-**It's intelligence for every refrigerator.**
+## Future Scope
+
+FrostIQ has been designed with a modular architecture that supports future expansion without requiring hardware replacement.
+
+Planned enhancements include:
+
+- Predictive Maintenance using Machine Learning
+- Firebase Cloud Messaging
+- Food Inventory Detection
+- Automatic Shopping List Generation
+- Multi-Refrigerator Support
+- Over-the-Air Firmware Updates
+- Advanced Energy Analytics
+- Appliance Usage Forecasting
+- Web Dashboard
+
+---
+
+## Project Status
+
+**Current Status:** Active Development
+
+### Completed
+
+- ESP32 Firmware
+- Sensor Integration
+- Firebase Integration
+- Flutter Mobile Application
+- Flask Backend
+- AI Maintenance Assistant
+- Smart Notification Engine
+- Appliance Health Score
+- Energy Monitoring
+- Electricity Bill Estimation
+- QR-Based Device Registration
+- Predictive Maintenance
+- Multi-Device Support
+
+### In Progress
+
+- Web Dashboard
+- OTA Firmware Updates
+
+---
+
+## Contributors
+
+| Name | Responsibility |
+|------|----------------|
+| Vinay E | Team Lead, Backend Development and System Integration |
+| Sara | Embedded Systems and Hardware Development |
+| Akshaya R K | Documentation, UI Design and Project Presentation |
+| Aishwarya S | Product Strategy, Research and Testing |
+
+---
+
+## License
+
+This project is intended for educational, research, and prototype development purposes.
+
+---
+
+## Acknowledgements
+
+This project was developed as part of an effort to demonstrate how existing household appliances can be upgraded using IoT, cloud computing, and artificial intelligence without requiring complete replacement.
+
+The project integrates embedded systems, cloud infrastructure, AI-assisted maintenance guidance, and mobile application development into a single retrofit platform.
+
+---
+
+## Vision
+
+FrostIQ demonstrates that innovation is not always about creating new products.
+
+Sometimes, the greatest impact comes from making existing technology more intelligent, more sustainable, and more accessible.
+
+By combining embedded sensing, cloud connectivity, and AI-assisted maintenance guidance, FrostIQ extends the capabilities of conventional refrigerators while reducing unnecessary electronic waste.
+
+---
+
+<p align="center">
+
+**FrostIQ**
+
+*Intelligence for Every Refrigerator.*
+
+</p>
